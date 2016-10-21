@@ -1,0 +1,24 @@
+CREATE DATABASE logger DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+USE logger;
+
+CREATE TABLE user_info (
+	user_id BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户id',
+	user_name VARCHAR(20) NOT NULL COMMENT '用户名',
+	password VARCHAR(40) NOT NULL COMMENT '用户密码',
+	nickname VARCHAR(20) NOT NULL COMMENT '用户昵称，默认等于用户名',
+	status int NOT NULL DEFAULT '0' COMMENT '用户状态{0:正常，1:锁定}',
+	create_time DATETIME NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(user_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
+
+CREATE TABLE system_log (
+	id BIGINT NOT NULL AUTO_INCREMENT COMMENT 'id',
+	module VARCHAR(255) NOT NULL COMMENT '模块',
+	method VARCHAR(255) NOT NULL COMMENT '方法',
+	`desc` VARCHAR(255) NOT NULL COMMENT '描述',
+	user_id BIGINT NOT NULL COMMENT '操作人ID',
+	userNickname VARCHAR(20) NOT NULL COMMENT '操作人昵称',
+	create_time DATETIME NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作历史表';

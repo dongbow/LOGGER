@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.demo.logger.dao.SystemLogDao">
+
+	<sql id="allKey">
+		module, method, desc, args, userId, userNickname, ip, createTime
+	</sql>
+	
+    <insert id="insert" parameterType="SystemLog">
+    	insert into system_log (<include refid="allKey"/>)
+    	values (#{module}, #{method}, #{desc}, #{args}, #{userId}, #{userNickname}, #{ip}, #{createTime})
+    </insert>
+
+</mapper>
