@@ -3,10 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!-- 配置全局属性 -->
+
     <settings>
-    	<!-- 开启缓存 -->
-    	<setting name="cacheEnabled" value="true" />
     	<!-- 关闭延时加载 -->
     	<setting name="lazyLoadingEnabled" value="false" />  
     	<setting name="aggressiveLazyLoading" value="true" /> 

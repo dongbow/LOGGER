@@ -28,9 +28,11 @@ public class CookieUtils {
 	public static String getCookieValue(String cookieName, HttpServletRequest request) {
 		String cookieValue = null;
 		Cookie cookie[] = request.getCookies();
-		for (Cookie c : cookie) {
-			if(cookieName.equals(c.getName())) {
-				cookieValue = Base64Utils.getFromBase64(c.getValue());
+		if(cookie != null) {
+			for (Cookie c : cookie) {
+				if(cookieName.equals(c.getName())) {
+					cookieValue = Base64Utils.getFromBase64(c.getValue());
+				}
 			}
 		}
 		return cookieValue;

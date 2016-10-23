@@ -21,18 +21,18 @@ $(function(){
 		if(Logger.validate($('#name').val(), $('#password').val())) {
 			$.post(Logger.URL.login(), {
 				'username': $('#name').val(),
-				'password': $('#password').val()
+				'password': $.md5($('#password').val())
 			}, function(result) {
 				if(result.rc != -1) {
-					window.location = result.data;
+					window.location = ROOT + result.data;
 				} else {
-					$('.alert').append(result.error);
-					$('.alert').alert();
+					$('.modal-body').html(result.error);
+					$('#myModal').modal();
 				}
 			});
 		} else {
-			$('.alert').append('用户名和密码不能为空');
-			$('.alert').alert();
+			$('.modal-body').html('用户名和密码不能为空');
+			$('#myModal').modal();
 		}
 	});
 });

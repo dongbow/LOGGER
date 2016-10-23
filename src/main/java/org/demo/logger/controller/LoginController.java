@@ -30,9 +30,8 @@ public class LoginController {
 		return "login";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/account/login/do", method = RequestMethod.POST)
-	public Result loginCheck(HttpServletResponse response, String username, String password) {
+	@RequestMapping(value = "/login/do", method = RequestMethod.POST)
+	public @ResponseBody Result loginCheck(HttpServletResponse response, String username, String password) {
 		Result result = null;
 		try {
 			if(StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {

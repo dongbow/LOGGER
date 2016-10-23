@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/sytem")
+@RequestMapping("/system")
 public class IndexController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());

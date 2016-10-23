@@ -5,11 +5,11 @@
 <mapper namespace="org.demo.logger.dao.UserDao">
 
     <select id="login" resultType="User">
-        select user_id, user_name, nickname, status, create_time from user_info where user_name = #{username} and password = #{password} and status = 0
+        select user_id, user_name, nickname, status, create_time from user_info where user_name = #{username} and password = #{password} and status = 0 and is_admin = 1
     </select>
 
 	<select id="getUserList" resultType="User">
-		select user_id, user_name, nickname, status, create_time from user_info
+		select user_id, user_name, nickname, status, create_time from user_info where is_admin != 1
 	</select>
 
 	<update id="delete">

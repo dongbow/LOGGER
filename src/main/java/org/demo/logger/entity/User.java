@@ -1,5 +1,7 @@
 package org.demo.logger.entity;
 
+import java.util.Date;
+
 public class User {
 
 	private int userId;
@@ -7,7 +9,8 @@ public class User {
 	private String password;
 	private String nickname;
 	private int status;
-	private String createTime;
+	private Date createTime;
+	private int isAdmin;
 
 	public int getUserId() {
 		return userId;
@@ -49,12 +52,20 @@ public class User {
 		this.nickname = nickname;
 	}
 
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public int getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(int isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 }

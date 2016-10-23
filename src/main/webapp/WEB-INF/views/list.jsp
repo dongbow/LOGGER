@@ -14,7 +14,7 @@
                 <h2>用户列表</h2>
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-center table-hover">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="all"></th>

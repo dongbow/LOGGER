@@ -16,17 +16,12 @@ import org.apache.commons.lang.StringUtils;
 import org.demo.logger.constant.LoggerConstant;
 import org.demo.logger.result.Result;
 import org.demo.logger.utils.CookieUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 
 public class LoginFilter implements Filter {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-
 	public void destroy() {
-		logger.info("filter destory...");
 	}
 
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
@@ -36,16 +31,14 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;  
         HttpServletResponse response = (HttpServletResponse) resp;
         String cookie = CookieUtils.getCookieValue(CookieUtils.LOGGER_COOKIE, request);
-        if(StringUtils.isNotBlank(cookie)) {
-        	return;
-        }
-        StringBuffer url = request.getRequestURL();
-        if(url.indexOf(LoggerConstant.FILTER) > 0) {
-        	this.result(request, response);
-        	return;
+        if(StringUtils.isEmpty(cookie)) {
+        	StringBuffer url = request.getRequestURL();
+            if(url.indexOf(LoggerConstant.FILTER) > 0) {
+            	this.result(request, response);
+            	return;
+            }
         }
 		chain.doFilter(request, response);
-		return;
 	}
 
 	private void result(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -75,7 +68,6 @@ public class LoginFilter implements Filter {
 	}
 	
 	public void init(FilterConfig fConfig) throws ServletException {
-		logger.info("filter init...");
 	}
 
 }
