@@ -8,32 +8,32 @@
 	<%@include file="common/head.jsp" %>
 </head>
 <body>
-	<div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2>用户登录</h2>
-            </div>
-            <div class="panel-body">
-                <div class="form-group">
-					<label for="name" class="col-sm-2 control-label">用户名</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="name" name="name" placeholder="请输入用户名">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="lastname" class="col-sm-2 control-label">密码</label>
-					<div class="col-sm-10">
-						<input type="password" class="form-control" id="password" name="password" placeholder="请输入密码">
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<a id="login" type="button" class="btn btn-success">登录</a>
-					</div>
-				</div>
-            </div>
-        </div>
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="container">    
+        <div id="loginbox" style="margin-top:100px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-title">用户登录</div>
+                </div>     
+                <div style="padding-top:30px" class="panel-body">
+                    <form id="loginform" class="form-horizontal" role="form">
+                        <div style="margin-bottom: 25px" class="input-group">
+                           <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                           <input id="name" class="form-control" name="username" value="" placeholder="输入用户名" type="text">                                        
+                       </div>
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input id="password" class="form-control" name="password" placeholder="输入密码" type="password">
+                        </div>
+                        <div style="margin-top:10px" class="form-group">
+                            <div class="col-sm-12 controls">
+                            	<a id="login" type="button" class="btn btn-primary">登录</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>  
+        	</div>
+         </div> 
+         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		    <div class="modal-dialog">
 		        <div class="modal-content">
 		            <div class="modal-header">
@@ -41,9 +41,6 @@
 		                <h4 class="modal-title" id="myModalLabel">系统提示</h4>
 		            </div>
 		            <div class="modal-body"></div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-		            </div>
 		        </div>
 		    </div>
 		</div>

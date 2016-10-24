@@ -16,6 +16,6 @@ public interface UserService {
 	
 	public String getNicknameFromCookie(HttpServletRequest request);
 	
-	public int delete(String ids);
+	public int delete(long[] ids);
 
 }

@@ -2,7 +2,7 @@ var ROOT = "/logger";
 
 var Logger = {
 	URL: {
-		login : function(){
+		login: function() {
 			return ROOT + "/account/login/do";
 		}
 	},
@@ -17,6 +17,13 @@ var Logger = {
 };
 
 $(function(){
+	
+	$(document).keydown(function(event){  
+	   if(event.which == '13') {  
+		   $('#login').click();
+	   }  
+	});
+	
 	$('#login').click(function(){
 		if(Logger.validate($('#name').val(), $('#password').val())) {
 			$.post(Logger.URL.login(), {

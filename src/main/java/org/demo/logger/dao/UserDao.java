@@ -11,6 +11,6 @@ public interface UserDao {
 
 	public List<User> getUserList();
 	
-	public int delete(List<Integer> idList);
+	public int delete(long[] ids);
 
 }

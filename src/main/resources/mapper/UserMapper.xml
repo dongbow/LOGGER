@@ -14,7 +14,7 @@
 
 	<update id="delete">
 		update user_info set status = 1 where user_id in 
-		<foreach collection="list" index="index" item="ids" open="(" separator="," close=")">
+		<foreach collection="array" index="index" item="ids" open="(" separator="," close=")">
 			#{ids}
 		</foreach>
 	</update>

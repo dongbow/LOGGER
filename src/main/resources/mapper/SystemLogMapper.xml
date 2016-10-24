@@ -5,12 +5,12 @@
 <mapper namespace="org.demo.logger.dao.SystemLogDao">
 
 	<sql id="allKey">
-		module, method, desc, args, userId, userNickname, ip, createTime
+		module, method, status_desc, args, user_id, user_nickname, ip, create_time
 	</sql>
 	
     <insert id="insert" parameterType="SystemLog">
     	insert into system_log (<include refid="allKey"/>)
-    	values (#{module}, #{method}, #{desc}, #{args}, #{userId}, #{userNickname}, #{ip}, #{createTime})
+    	values (#{module}, #{method}, #{statusDesc}, #{args}, #{userId}, #{userNickname}, #{ip}, #{createTime})
     </insert>
 
 </mapper>

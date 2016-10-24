@@ -30,8 +30,9 @@ public class LoginController {
 		return "login";
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/login/do", method = RequestMethod.POST)
-	public @ResponseBody Result loginCheck(HttpServletResponse response, String username, String password) {
+	public Result loginCheck(HttpServletResponse response, String username, String password) {
 		Result result = null;
 		try {
 			if(StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
@@ -46,7 +47,7 @@ public class LoginController {
 				result = new Result(LoggerConstant.FAIL, "输入数据不能为空");
 			}
 		} catch(Exception e) {
-			logger.error("登录错误", e.getMessage());
+			logger.error("登录错误", e);
 			result = new Result(LoggerConstant.FAIL, "系统异常");
 		}
 		return result;

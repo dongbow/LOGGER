@@ -1,10 +1,12 @@
 package org.demo.logger.aop;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -17,10 +19,16 @@ import org.demo.logger.annotation.SysLog;
 import org.demo.logger.dao.SystemLogDao;
 import org.demo.logger.entity.SystemLog;
 import org.demo.logger.service.UserService;
+import org.demo.logger.utils.GetRemoteIpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+@Order(2)
 @Aspect
 @Component
 public class SysLogAop {
@@ -32,59 +40,55 @@ public class SysLogAop {
 	
 	@Resource
 	private UserService userService;
-
+	
 	@Pointcut("@annotation(org.demo.logger.annotation.SysLog)")
 	public void LogAspect() {
 	}
 
-	/**
-	 * 操作异常记录
-	 * @throws Exception 
-	 * 
-	 */
 	@AfterThrowing(pointcut = "LogAspect()", throwing = "e")
 	public void doAfterThrowing(JoinPoint point, Throwable e) throws Exception {
+		RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+		ServletRequestAttributes sra = (ServletRequestAttributes)ra;
+		HttpServletRequest request = sra.getRequest();
 		SystemLog systemLog = new SystemLog();
 		Map<String, Object> map = this.getMethodDescription(point);
 		systemLog.setModule(map.get("module").toString());
 		systemLog.setMethod("<font color=\"red\">执行方法异常:-->" + map.get("methods").toString() + "</font>");
-		systemLog.setDesc("<font color=\"red\">执行方法异常:-->" + e + "</font>");
-		systemLog.setArgs("");
-		systemLog.setId(1065);
-		systemLog.setUserNickname("dongbow");
-		systemLog.setCreateTime("2016-10-21 11:50:22");
+		systemLog.setStatusDesc("<font color=\"red\">执行方法异常:-->" + e + "</font>");
+		systemLog.setArgs(map.get("args").toString());
+		systemLog.setUserId(userService.getUserIdFromCookie(request));
+		systemLog.setUserNickname(userService.getNicknameFromCookie(request));
+		systemLog.setIp(GetRemoteIpUtil.getRemoteIp(request));
+		systemLog.setCreateTime(new Date());
 		systemLogDao.insert(systemLog);
 	}
 
 	@Around("LogAspect()")
 	public Object doAround(ProceedingJoinPoint point) {
+		RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+		ServletRequestAttributes sra = (ServletRequestAttributes)ra;
+		HttpServletRequest request = sra.getRequest();
 		Object result = null;
 		try {
+			result = point.proceed();
 			SystemLog systemLog = new SystemLog();
 			Map<String, Object> map = this.getMethodDescription(point);
 			systemLog.setModule(map.get("module").toString());
 			systemLog.setMethod(map.get("methods").toString());
-			systemLog.setDesc(map.get("description").toString());
-			systemLog.setArgs("");
-			systemLog.setId(1065);
-			systemLog.setUserNickname("dongbow");
-			systemLog.setCreateTime("2016-10-21 11:50:22");
+			systemLog.setStatusDesc(map.get("description").toString());
+			systemLog.setArgs(map.get("args").toString());
+			systemLog.setUserId(userService.getUserIdFromCookie(request));
+			systemLog.setUserNickname(userService.getNicknameFromCookie(request));
+			systemLog.setIp(GetRemoteIpUtil.getRemoteIp(request));
+			systemLog.setCreateTime(new Date());
 			systemLogDao.insert(systemLog);
-			result = point.proceed();
-		} catch (Exception e) {
-			logger.error("异常信息:{}", e.getMessage());
 		} catch (Throwable e) {
 			logger.error("异常信息:{}", e.getMessage());
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
 
-	/**
-	 * 获取注解中对方法的描述信息
-	 * 
-	 * @return 方法描述
-	 * @throws Exception
-	 */
 	@SuppressWarnings("rawtypes")
 	public Map<String, Object> getMethodDescription(JoinPoint joinPoint) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -99,10 +103,11 @@ public class SysLogAop {
 				if (clazzs.length == arguments.length) {
 					map.put("module", method.getAnnotation(SysLog.class).module());
 					map.put("methods", method.getAnnotation(SysLog.class).methods());
-					String de = method.getAnnotation(SysLog.class).description();
-					if (StringUtils.isEmpty(de))
-						de = "执行成功!";
-					map.put("description", de);
+					map.put("args", arguments);
+					String desc = method.getAnnotation(SysLog.class).description();
+					if (StringUtils.isEmpty(desc))
+						desc = "执行成功!";
+					map.put("description", desc);
 					break;
 				}
 			}

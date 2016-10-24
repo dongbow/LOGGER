@@ -9,15 +9,30 @@
 </head>
 <body>
 	<div class="container">
-        <div class="panel panel-default">
+        <div class="panel panel-primary" style="margin-top:100px;">
             <div class="panel-heading text-center">
-                <h2>用户列表</h2>
+               <div class="panel-heading">
+                    <div class="panel-title"><h4>用户列表</h4></div>
+                    <div style="float:right; font-size: 100%; position: relative; top:-10px">
+                    	<span class="login" style="margin-right:10px;"></span>
+                    	<a href="${path}/account/logout" style="color:#fff;">退出</a>
+                    </div>
+                </div> 
             </div>
             <div class="panel-body">
+            	<div class="row">
+	            	<div class="panel">
+	            		<div class="panel-body">
+	            			<div class="col-sm-12 controls">
+	                    		<a id="delete" type="button" class="btn btn-danger">删除</a>
+	                    	</div>
+	                    </div>
+	                </div>
+            	</div>
                 <table class="table table-center table-hover">
                     <thead>
                         <tr>
-                            <th><input type="checkbox" id="all"></th>
+                            <th><input type="checkbox" id="selectAll"></th>
                             <th>用户名</th>
                             <th>用户昵称</th>
                             <th>状态</th>
@@ -27,7 +42,7 @@
                     <tbody>
                         <c:forEach var="user" items="${users}">
                             <tr>
-                            	<td><c:if test="${user.status eq 0}"><input type="checkbox" value="${user.userId}"></c:if></td>
+                            	<td><c:if test="${user.status eq 0}"><input name="uid" type="checkbox" value="${user.userId}"></c:if></td>
                                 <td>${user.userName}</td>
                                 <td>${user.nickname}</td>
                                 <td>
@@ -51,5 +66,6 @@
 </body>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/resources/js/list.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js"></script>
+<script type="text/javascript" src="${path}/resources/js/list.js"></script>
 </html>
