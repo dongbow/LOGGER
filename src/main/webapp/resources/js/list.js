@@ -5,6 +5,9 @@ var Logger = {
 		getName: function() {
 			return ROOT + "/system/get/name";
 		},
+		getAdd: function() {
+			return ROOT + "/system/user/addpanel";
+		},
 		userDelete: function() {
 			return ROOT + "/system/user/delete";
 		}
@@ -23,6 +26,23 @@ $(function(){
 			}
 		}
 	});
+	
+	$('#add').click(function() {
+		$.get(Logger.URL.getAdd(), function(result) {
+			if(result.rc != undefined && result.rc == 9001){
+				bootbox.alert(result.error, function() {
+        			window.location = result.data;
+        		});
+			} else {
+				$('.modal-body').html(result);
+				$(document).on('click', '#save', save);
+				$(document).on('click', '#cancel', close);
+				$('#myModal').modal();
+			}
+		});
+	});
+	
+	$('.close').bind('click', close);
 	
 	$('#selectAll').click(function() {
 		if ($(this).is(':checked')) {
@@ -81,3 +101,11 @@ $(function(){
 		}
 	});
 });
+
+function save() {
+	bootbox.alert('没写');
+}
+
+function close() {
+	$('.modal-body').children('div').remove();
+};

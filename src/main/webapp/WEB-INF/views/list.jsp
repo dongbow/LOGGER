@@ -24,6 +24,7 @@
 	            	<div class="panel">
 	            		<div class="panel-body">
 	            			<div class="col-sm-12 controls">
+	            				<a id="add" type="button" class="btn btn-primary">添加</a>
 	                    		<a id="delete" type="button" class="btn btn-danger">删除</a>
 	                    	</div>
 	                    </div>
@@ -62,6 +63,17 @@
                 </table>
             </div>
         </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+		    <div class="modal-dialog" style="height: auto;">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title" id="myModalLabel">添加用户</h4>
+		            </div>
+		            <div class="modal-body"></div>
+		        </div>
+		    </div>
+		</div>
     </div>
 </body>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>

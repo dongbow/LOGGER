@@ -40,6 +40,11 @@ public class IndexController {
 		return "list";
 	}
 	
+	@RequestMapping("/user/addpanel")
+	public String addPanel() {
+		return "user-info";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)
 	public Result deleteUser(@RequestParam(value = "ids[]")long[] ids) {
