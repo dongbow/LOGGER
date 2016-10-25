@@ -22,6 +22,7 @@ import org.demo.logger.service.UserService;
 import org.demo.logger.utils.GetRemoteIpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
@@ -35,6 +36,8 @@ public class SysLogAop {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	private LocalVariableTableParameterNameDiscoverer parameterNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
+	
 	@Resource
 	private SystemLogDao systemLogDao;
 	
@@ -103,7 +106,7 @@ public class SysLogAop {
 				if (clazzs.length == arguments.length) {
 					map.put("module", method.getAnnotation(SysLog.class).module());
 					map.put("methods", method.getAnnotation(SysLog.class).methods());
-					map.put("args", arguments);
+					map.put("args", this.getArgs(method, arguments));
 					String desc = method.getAnnotation(SysLog.class).description();
 					if (StringUtils.isEmpty(desc))
 						desc = "执行成功!";
@@ -114,4 +117,15 @@ public class SysLogAop {
 		}
 		return map;
 	}
+	
+	private String getArgs(Method method, Object[] arguments) {
+		StringBuilder builder = new StringBuilder("{");
+		String params[] = parameterNameDiscoverer.getParameterNames(method);
+		for (int i = 0; i < params.length; i++) {
+			if(!"password".equals(params[i])) {
+				builder.append(params[i]).append(" : ").append(arguments[i]).append(";");
+			}
+        }
+        return builder.append("}").toString();
+    }
 }
