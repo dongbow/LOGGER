@@ -34,9 +34,17 @@ $(function(){
         			window.location = result.data;
         		});
 			} else {
+				$('.modal-title').html('添加用户');
 				$('.modal-body').html(result);
-				$(document).on('click', '#save', save);
-				$(document).on('click', '#cancel', close);
+				$(document).on('click', '#save', function() {
+					$('.modal-body').children('div').remove();
+					$('#myModal').modal('hide');
+					bootbox.alert('没写');
+				});
+				$(document).on('click', '#cancel', function() {
+					$('.modal-body').children('div').remove();
+					$('#myModal').modal('hide');
+				});
 				$('#myModal').modal();
 			}
 		});
@@ -87,7 +95,11 @@ $(function(){
 		        		$.post(Logger.URL.userDelete(), {
 			            	"ids": ids
 			            }, function(data) {
-			            	if(data.rc == 0) {
+			            	if(data.rc == 9001) {
+			            		bootbox.alert(result.error, function() {
+			            			window.location = result.data;
+			            		});
+			            	} else if(data.rc == 0) {
 			            		bootbox.alert(data.data, function() {
 			            			window.location = window.location;
 			            		});
@@ -101,10 +113,6 @@ $(function(){
 		}
 	});
 });
-
-function save() {
-	bootbox.alert('没写');
-}
 
 function close() {
 	$('.modal-body').children('div').remove();

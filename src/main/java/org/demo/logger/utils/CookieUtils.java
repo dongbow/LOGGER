@@ -5,13 +5,14 @@ import javax.servlet.http.HttpServletRequest;
 
 public class CookieUtils {
 
+	public static final String LOGGER_PASSWORD = "5%lSx0s]YEm[gy%m2-=wT930!VUc2YA=";
 	public static String LOGGER_COOKIE = "LOGGER_COOKIE";
 	public static String PATH = "/";
 	public static int EXPIRE_TIME = 60 * 60 * 24 * 7;
 	
 	public static Cookie createCookie(String cookieName, String value, 
 			String path, int expireTime) {
-		Cookie cookie = new Cookie(cookieName, Base64Utils.getBase64(value));
+		Cookie cookie = new Cookie(cookieName, AESUtils.encrypt(value, LOGGER_PASSWORD));
 		cookie.setPath(path);
 		cookie.setMaxAge(expireTime);
 		return cookie;
@@ -19,7 +20,7 @@ public class CookieUtils {
 	
 	public static Cookie createLoggerCookie(long userId, String nickname) {
 		String value = userId + ";" + nickname;
-		Cookie cookie = new Cookie(LOGGER_COOKIE, Base64Utils.getBase64(value));
+		Cookie cookie = new Cookie(LOGGER_COOKIE, AESUtils.encrypt(value, LOGGER_PASSWORD));
 		cookie.setPath(PATH);
 		cookie.setMaxAge(EXPIRE_TIME);
 		return cookie;
@@ -31,7 +32,7 @@ public class CookieUtils {
 		if(cookie != null) {
 			for (Cookie c : cookie) {
 				if(cookieName.equals(c.getName())) {
-					cookieValue = Base64Utils.getFromBase64(c.getValue());
+					cookieValue = AESUtils.decrypt(c.getValue(), LOGGER_PASSWORD);
 				}
 			}
 		}
