@@ -36,16 +36,16 @@ $(function(){
 			} else {
 				$('.modal-title').html('添加用户');
 				$('.modal-body').html(result);
+				$('#myModal').modal();
 				$(document).on('click', '#save', function() {
-					$('.modal-body').children('div').remove();
 					$('#myModal').modal('hide');
+					$('.modal-body').children('div').remove();
 					bootbox.alert('没写');
 				});
 				$(document).on('click', '#cancel', function() {
 					$('.modal-body').children('div').remove();
 					$('#myModal').modal('hide');
 				});
-				$('#myModal').modal();
 			}
 		});
 	});
