@@ -12,6 +12,15 @@
 		select user_id, user_name, nickname, status, create_time from user_info where is_admin != 1
 	</select>
 
+	<select id="exist" resultType="Integer">
+		select count(1) from user_info where user_name = #{name}
+	</select>
+
+	<insert id="add" keyProperty="user_id" parameterType="User">
+		insert into user_info (user_name, nickname, password, status, is_admin, create_time)
+		values (#{userName}, #{nickname}, #{password}, #{status}, #{isAdmin}, #{createTime})
+	</insert>
+
 	<update id="delete">
 		update user_info set status = 1 where user_id in 
 		<foreach collection="array" index="index" item="ids" open="(" separator="," close=")">

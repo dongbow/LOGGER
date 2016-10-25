@@ -8,9 +8,22 @@ var Logger = {
 		getAdd: function() {
 			return ROOT + "/system/user/addpanel";
 		},
+		postAdd: function() {
+			return ROOT + "/system/user/add/do";
+		},
+		nameExist: function() {
+			return ROOT + "/system/user/exist";
+		},
 		userDelete: function() {
 			return ROOT + "/system/user/delete";
 		}
+	},
+	validate: function (name, password, nickname) {
+	    if (name && password && nickname) {
+	        return true;
+	    } else {
+	        return false;
+	    }
 	}
 };
 
@@ -37,15 +50,9 @@ $(function(){
 				$('.modal-title').html('添加用户');
 				$('.modal-body').html(result);
 				$('#myModal').modal();
-				$(document).on('click', '#save', function() {
-					$('#myModal').modal('hide');
-					$('.modal-body').children('div').remove();
-					bootbox.alert('没写');
-				});
-				$(document).on('click', '#cancel', function() {
-					$('.modal-body').children('div').remove();
-					$('#myModal').modal('hide');
-				});
+				$('#registerform').on('blur', '#name', exist);
+				$('#registerform').on('click', '#save', save);
+				$('#registerform').on('click', '#cancel', close);
 			}
 		});
 	});
@@ -116,4 +123,51 @@ $(function(){
 
 function close() {
 	$('.modal-body').children('div').remove();
+	$('#myModal').modal('hide');
 };
+
+function exist() {
+	var name = $('#name').val();
+	if(name) {
+		$.post(Logger.URL.nameExist(), {
+			"name": name,
+		}, function(result) {
+			if(result.rc == 9001) {
+        		bootbox.alert(result.error, function() {
+        			window.location = result.data;
+        		});
+        	} else if(result.rc == -1) {
+        		bootbox.alert(result.error);
+        	}
+		}); 
+	}
+}
+
+function save() {
+	var name = $('#name').val();
+	var password = $('#password').val();
+	var nickname = $('#nickname').val();
+	
+	if(Logger.validate(name, password, nickname)) {
+		$.post(Logger.URL.postAdd(), {
+			"name": name,
+			"password": $.md5(password),
+			"nickname": nickname
+		}, function(data) {
+			if(data.rc == 9001) {
+        		bootbox.alert(result.error, function() {
+        			window.location = result.data;
+        		});
+        	} else if(data.rc == 0) {
+        		$('#myModal').modal('hide');
+        		bootbox.alert(data.data, function() {
+        			window.location = window.location;
+        		});
+        	} else {
+        		bootbox.alert(data.error);
+        	}
+		});
+	} else {
+		bootbox.alert("不能为空");
+	}
+}

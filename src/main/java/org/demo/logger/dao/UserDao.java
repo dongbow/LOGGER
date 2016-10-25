@@ -13,4 +13,8 @@ public interface UserDao {
 	
 	public int delete(long[] ids);
 
+	public int add(User user);
+
+	public int exist(String name);
+
 }

@@ -16,6 +16,10 @@ public interface UserService {
 	
 	public String getNicknameFromCookie(HttpServletRequest request);
 	
+	public int add(String name, String password, String nickname);
+	
 	public int delete(long[] ids);
+
+	public int exist(String name);
 
 }
