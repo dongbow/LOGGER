@@ -1,8 +1,12 @@
-package org.demo.logger.aop;
+﻿package org.demo.logger.aop;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -122,10 +126,24 @@ public class SysLogAop {
 		StringBuilder builder = new StringBuilder("{");
 		String params[] = parameterNameDiscoverer.getParameterNames(method);
 		for (int i = 0; i < params.length; i++) {
-			if(!"password".equals(params[i])) {
-				builder.append(params[i]).append(" : ").append(arguments[i]).append(";");
+			if(!StringUtils.equals("password", params[i])) {
+				if(arguments[i].getClass().isArray()) {
+					arguments[i] = Arrays.toString(makeArrayObject(arguments[i]).toArray());
+				}
+				builder.append(params[i]).append(":").append(arguments[i]);
+				if(i != params.length - 1) {
+					builder.append("; ");
+				}
 			}
         }
         return builder.append("}").toString();
     }
+	
+    private List<Object> makeArrayObject(Object array) {  
+        List<Object> tem = new ArrayList<Object>();  
+        for (int i = 0; i < Array.getLength(array); i++) {  
+            tem.add(Array.get(array, i));  
+        }  
+        return tem;  
+    }  
 }
